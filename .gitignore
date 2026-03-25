@@ -1,5 +1,38 @@
 .vs/
 
+# Build folders
+build/
+out/
+
+# Visual Studio
+*.vcxproj*
+*.sln
+*.VC.db
+*.VC.opendb
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Other
+*.obj
+*.exe
+*.log
+*.pdb
+*.ilk
+*.ipch
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.tlog
+*.idb
+*.class
+*.pyc
+*.DS_Store
+
 *.user
 *.suo
 *.vcxproj.user

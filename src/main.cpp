@@ -2,69 +2,75 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "graphics/Shader.h"
-#include "graphics/VertexArray.h"
-#include "graphics/VertexBuffer.h"
-#include "graphics/IndexBuffer.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include "graphics/Shader/Shader.h"
+#include "graphics/VertexArray/VertexArray.h"
+#include "graphics/VertexBuffer/VertexBuffer.h"
+#include "graphics/IndexBuffer/IndexBuffer.h"
 
-#include "core/Application.h"
-
-class MyApp : public Application
-{
-public:
-    MyApp(unsigned int width, unsigned int height, const char* title) 
-        : Application(width, height, title)
-        , shader("basic.vert", "basic.frag")
-    {
-        initTriangle();
+int main() {
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW!" << std::endl;
+        return -1;
     }
-    ~MyApp() {}
-
-    void update(float dt) override
-    {
-
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Square", nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window!" << std::endl;
+        glfwTerminate();
+        return -1;
     }
-
-    void render() override
-    {
-        shader.use();
-
-        VAO.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        VAO.unbind();
+    glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD!" << std::endl;
+        return -1;
     }
 
-private:
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
+    };
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
     VertexArray VAO;
     VertexBuffer VBO;
-    Shader shader;
+    IndexBuffer IBO(indices, 6);
+    VAO.bind();
+    VBO.bind();
+    VBO.setData(vertices, sizeof(vertices));
+    IBO.bind();
+    VAO.addVertexAttrib(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    VAO.unbind();
+    VBO.unbind();
+    IBO.unbind();
 
-    void initTriangle()
-    {
-        float vertices[] = {
-             0.0f,  0.5f, 0.0f,
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f
-        };
+    Shader shader("basic.vert", "basic.frag");
 
+    while (!glfwWindowShouldClose(window)) {
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        shader.use();
         VAO.bind();
-        VBO.bind();
-        VBO.setData(vertices, sizeof(vertices));
-        VAO.addVertexAttrib(
-            0,
-            3,
-            GL_FLOAT,
-            GL_FALSE,
-            3 * sizeof(float),
-            (void*)0);
+        IBO.bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        IBO.unbind();
         VAO.unbind();
-        VBO.unbind();
-    }
-};
 
-int main()
-{
-    MyApp app(800, 600, "Engine");
-    app.run();
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
     return 0;
 }
