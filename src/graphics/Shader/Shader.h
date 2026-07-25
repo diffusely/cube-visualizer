@@ -5,25 +5,25 @@
 #include <iostream>
 #include <string>
 
+#include <glm/gtc/type_ptr.hpp>
+
 class Shader {
 public:
-    Shader(const std::string& vertexPath,
-           const std::string& fragmentPath);
+    Shader(const char* vertexPath, const char* fragmentPath);
     ~Shader();
 
-    void use(); 
-    void bind() const;
-    void unbind() const;
+    void use();
 
-    // uniforms
+    void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
-    // void setVec3(const std::string& name, const glm::vec3& v) const;
-    // void setMat4(const std::string& name, const glm::mat4& m) const;
+    void setMat4(const std::string& name, const glm::mat4& mat) const;
+
+    unsigned int get_ID() const { return m_ID; }
 
 private:
     unsigned int m_ID;
 
-    std::string loadFile(const std::string& path);
-    unsigned int compileShader(unsigned int type, const std::string& src);
+private:
+    void checkCompileErrors(unsigned int shader, std::string type);
 };
