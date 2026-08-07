@@ -2,28 +2,24 @@
 
 IndexBuffer::IndexBuffer(const unsigned int *indices, unsigned int count)
     : m_Count(count)
+    , m_RendererID(0)
 {
-    glGenBuffers(1, &m_ID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
-    glBufferData(
-        GL_ELEMENT_ARRAY_BUFFER,
-        count * sizeof(unsigned int),
-        indices,
-        GL_STATIC_DRAW
-    );
+    glGenBuffers(1, &m_RendererID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 }
 
 IndexBuffer::~IndexBuffer()
 {
-    glDeleteBuffers(1, &m_ID);
+    glDeleteBuffers(1, &m_RendererID);
 }
 
-void IndexBuffer::bind() const
+void IndexBuffer::Bind() const
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 }
 
-void IndexBuffer::unbind() const
+void IndexBuffer::Unbind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

@@ -1,41 +1,47 @@
 #include "VertexArray.h"
 
 VertexArray::VertexArray()
-    : m_ID(0)
+    : m_RendererID(0)
 {
-    glGenVertexArrays(1, &m_ID);
+    glGenVertexArrays(1, &m_RendererID);
 }
 
 VertexArray::~VertexArray()
 {
-    glDeleteVertexArrays(1, &m_ID);
+    glDeleteVertexArrays(1, &m_RendererID);
 }
 
-void VertexArray::bind() const
+void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
-    glBindVertexArray(m_ID);
+    Bind();
+    vb.Bind();
+
+    const auto& elements = layout.GetElements();
+    unsigned int offset = 0;
+    for (unsigned int i = 0; i < elements.size(); i++) {
+
+        const auto& element = elements[i];
+        glEnableVertexAttribArray(i);
+
+        glVertexAttribPointer(i, 
+            element.count, 
+            element.type, 
+            element.normalized, 
+            layout.GetStride(),
+            (const void *)offset
+        );
+
+        offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
+    }
+
 }
 
-void VertexArray::unbind() const
+void VertexArray::Bind() const
+{
+    glBindVertexArray(m_RendererID);
+}
+
+void VertexArray::Unbind() const
 {
     glBindVertexArray(0);
-}
-
-void VertexArray::addVertexAttrib(
-    unsigned int index, 
-    int count, 
-    unsigned int type, 
-    bool normalized, 
-    int stride, 
-    const void *offset)
-{
-    glEnableVertexAttribArray(index);
-    glVertexAttribPointer(
-        index,
-        count,
-        type,
-        normalized ? GL_TRUE : GL_FALSE,
-        stride,
-        offset
-    );
 }

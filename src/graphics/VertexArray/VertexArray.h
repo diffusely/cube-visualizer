@@ -1,5 +1,7 @@
 #pragma once
 #include <glad/glad.h>
+#include "graphics/VertexBuffer/VertexBuffer.h"
+#include "graphics/VertexBufferLayout/VertexBufferLayout.h"
 
 class VertexArray
 {
@@ -7,18 +9,11 @@ public:
     VertexArray();
     ~VertexArray();
 
-    void bind() const;
-    void unbind() const;
+    void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
 
-    void addVertexAttrib(
-        unsigned int index,
-        int count,
-        unsigned int type,
-        bool normalized,
-        int stride,
-        const void* offset
-    );
+    void Bind() const;
+    void Unbind() const;
 
 private:
-    unsigned int m_ID;
+    unsigned int m_RendererID;
 };

@@ -4,15 +4,13 @@
 class VertexBuffer
 {
 public:
-    VertexBuffer();
+
     VertexBuffer(const void* data, unsigned int size);
     ~VertexBuffer();
 
-    void bind() const;
-    void unbind() const;
-
-    void setData(const void* data, unsigned int size);
+    void Bind() const;
+    void Unbind() const;
 
 private:
-    unsigned int m_ID;
+    unsigned int m_RendererID;
 };

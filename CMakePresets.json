@@ -1,0 +1,30 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "x64-debug",
+            "displayName": "x64 Debug",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "binaryDir": "${sourceDir}/build/x64-debug"
+        },
+        {
+            "name": "x64-release",
+            "displayName": "x64 Release",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "binaryDir": "${sourceDir}/build/x64-release"
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "build-debug",
+            "configurePreset": "x64-debug"
+        },
+        {
+            "name": "build-release",
+            "configurePreset": "x64-release"
+        }
+    ]
+}

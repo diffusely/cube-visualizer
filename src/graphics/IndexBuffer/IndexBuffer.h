@@ -7,12 +7,12 @@ public:
     IndexBuffer(const unsigned int* indices, unsigned int count);
     ~IndexBuffer();
 
-    void bind() const;
-    void unbind() const;
+    void Bind() const;
+    void Unbind() const;
 
     unsigned int getCount() const;
 
 private:
-    unsigned int m_ID;
+    unsigned int m_RendererID;
     unsigned int m_Count;
 };
