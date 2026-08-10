@@ -18,7 +18,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # -----------------------------
 # Source files
 # -----------------------------
-file(GLOB_RECURSE ENGINE_SOURCES
+file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS
     src/*.cpp
     libs/stb/stb.cpp
 )

@@ -1,39 +1,29 @@
-#include "window.h"
-
+#include "Window.h"
 
 Window::Window(int width, int height, const char* name)
-    : m_window(nullptr)
+    : m_Window(nullptr)
+    , m_Width(width)
+    , m_Height(height)
 {
 
-    if (!glfw_init()) {
+    if (!GlfwInit())
         return ;
-    }
+  
+    m_Window = glfwCreateWindow(width, height, name, NULL, NULL);
 
-    m_window = glfwCreateWindow(
-        width,
-        height,
-        name,
-        nullptr,
-        nullptr
-    );
-
-
-    if (!m_window) {
+    if (!m_Window) {
         std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
         return;
     }
 
-    glfwMakeContextCurrent(m_window);
+    glfwMakeContextCurrent(m_Window);
+    glfwSetFramebufferSizeCallback(m_Window, callback::framebuffer_size_callback);
+    glfwSetCursorPosCallback(m_Window, callback::mouse_move_callback);
+    glfwSetMouseButtonCallback(m_Window, callback::mouse_button_callback);
 
-    glfwSetFramebufferSizeCallback(
-        m_window,
-        framebuffer_size_callback
-    );
 
-    if (!gladLoadGLLoader(
-        (GLADloadproc)glfwGetProcAddress
-    )) {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD\n";
         return;
     }
@@ -41,49 +31,45 @@ Window::Window(int width, int height, const char* name)
     std::cout << "OpenGL initialized\n";
 }
 
-
-
 Window::~Window()
 {
-    if (m_window) {
-        glfwDestroyWindow(m_window);
+    if (m_Window) {
+        glfwDestroyWindow(m_Window);
     }
     glfwTerminate();
 }
 
+void Window::Clear()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
+void Window::Update()
+{
+    glfwSwapBuffers(m_Window);
+    glfwPollEvents();
+}
 
-bool Window::glfw_init()
+bool Window::ShouldClose() const
+{
+    return glfwWindowShouldClose(m_Window);
+}
+
+bool Window::GlfwInit()
 {
     if (!glfwInit()) {
         std::cerr << "GLFW init failed\n";
         return false;
     }
 
-    glfwWindowHint(
-        GLFW_CONTEXT_VERSION_MAJOR,
-        3
-    );
-
-    glfwWindowHint(
-        GLFW_CONTEXT_VERSION_MINOR,
-        3
-    );
-
-    glfwWindowHint(
-        GLFW_OPENGL_PROFILE,
-        GLFW_OPENGL_CORE_PROFILE
-    );
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     return true;
 }
 
-GLFWwindow* Window::get_window() const
+GLFWwindow* Window::GetNativeWindow() const
 {
-    return m_window;
-}
-
-void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
+    return m_Window;
 }

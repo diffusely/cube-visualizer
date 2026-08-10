@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "Callback/Callback.h"
+
 class Window
 {
 public:
@@ -13,15 +15,19 @@ public:
 	Window(int width, int height, const char* name);
 	~Window();
 
-	GLFWwindow* get_window() const;
-	
+	void Clear();
+	void Update();
+	bool ShouldClose() const;
+
+	GLFWwindow* GetNativeWindow() const;
+
 
 private:
-	bool glfw_init();
-
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+	bool GlfwInit();
 
 private:
-	GLFWwindow* m_window;
-
+	// Window
+	GLFWwindow* m_Window;
+	int m_Width;
+	int m_Height;
 };
