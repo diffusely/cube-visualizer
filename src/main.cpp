@@ -3,47 +3,24 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
 
-#include "Graphics/IndexBuffer/IndexBuffer.h"
-#include "Graphics/VertexBuffer/VertexBuffer.h"
-#include "Graphics/VertexBufferLayout/VertexBufferLayout.h"
-#include "Graphics/VertexArray/VertexArray.h"
-#include "Graphics/Shader/Shader.h"
-#include "Graphics/Renderer/Renderer.h"
-#include "Graphics/Texture/Texture.h"
-#include "Tests/TestClearColor.h"
-#include "Callback/CallBack.h"
+
 #include "Window/Window.h"
 #include "Cube/RubikCube.h"
 #include "Vertices/Vertices.h"
+#include "Core/DrawUI.h"
 
 const unsigned int SCR_WIDTH = 1400;
 const unsigned int SCR_HEIGHT = 960;
 
-glm::vec3 cameraPos = glm::vec3(
-    -0.347205f,
-    4.42031f,
-    4.11971f
-);
-
-glm::vec3 cameraUp = glm::vec3(
-    0.0f,
-    1.0f,
-    0.0f
-);
 
 int main()
 {
     //I Am Laugh Under The Weeping Moon
     Window window(1400, 900, "Cube");
 
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
 
     VertexArray va;
     VertexBuffer vb(CubeletMesh::vertices, sizeof(CubeletMesh::vertices));
@@ -74,26 +51,21 @@ int main()
 
     Renderer renderer;
 
-  
+    srand(time(0));
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
-
 
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
-
     ImGui_ImplGlfwGL3_Init(window.GetNativeWindow(), false);
     
-
-
     RubikCube cube;
-
-
-    bool rotation = false;
-    float rotate = 5.0f;
-    float time = 0.0f;
-    std::string roatationType = "";
+    
+    int count = 20;
+    int num = count;
+    bool randomize = false;
     while (!window.ShouldClose()) {
 
 
@@ -103,48 +75,19 @@ int main()
 
         ImGui_ImplGlfwGL3_NewFrame();
 
-        ImGui::Begin("Cube Controls");
+        UI::DrawUI(cube, randomize);
 
-        if (ImGui::Button("Top"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Top);
+        if (randomize && num && cube.GetRotationTime() <= 0.1f) {
+            cube.Randomize();
+            --num;
         }
 
-        if (ImGui::Button("Bottom"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Bottom);
+        if (num == 0) {
+            randomize = false;
+            num = count;
         }
-
-        if (ImGui::Button("Left"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Left);
-        }
-
-        if (ImGui::Button("Right"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Right);
-        }
-
-        if (ImGui::Button("Front"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Front);
-        }
-
-        if (ImGui::Button("Back"))
-        {
-            cube.SetRotState(true);
-            cube.SetRotType(Rotation::Back);
-        }
-
-        ImGui::End();
 
         cube.Update();
-
 
 
         glm::mat4 cubeRotation = glm::mat4(1.0f);
@@ -163,34 +106,16 @@ int main()
         );
 
 
-
-        for (auto& c : cube.GetCubelets()) {
-
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, c.position);
-            model = c.rotation * model;
-            model = glm::scale(model, glm::vec3(0.5f));
-
-
-            model = cubeRotation * model;
-
-            glm::mat4 view = glm::lookAt(cameraPos, glm::vec3(0, 0, 0), cameraUp);
-            glm::mat4 mvp = proj * view * model;
-
-
-            shader.Bind();
-            shader.SetUniformMath4f("u_MVP", mvp);
-
-
-            va.Bind();
-            ib.Bind();
-
-            renderer.Draw(va, ib, shader);
-        }
+        UI::DrawCube(
+            cube,
+            va,
+            ib,
+            shader,
+            renderer,
+            proj,
+            cubeRotation
+        );
        
-
-
-
         ImGui::Render();
         ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
         window.Update();

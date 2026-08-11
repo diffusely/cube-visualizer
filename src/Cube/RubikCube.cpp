@@ -82,49 +82,47 @@ void RubikCube::RotateBack()
 
 void RubikCube::Update()
 {
-  
-
     UpdateRotation();
     UpdateImGui();
-
 }
 
 void RubikCube::UpdateRotation()
 {
-    if (m_Rotation) {
+    if (!m_Rotation)
+        return ;
 
-        switch (m_Type)
-        {
-        case Rotation::Top:
-            RotateTop();
-            break;
+    switch (m_Type)
+    {
+    case Rotation::Top:
+        RotateTop();
+        break;
 
-        case Rotation::Bottom:
-            RotateBottom();
-            break;
+    case Rotation::Bottom:
+        RotateBottom();
+        break;
 
-        case Rotation::Left:
-            RotateLeft();
-            break;
+    case Rotation::Left:
+        RotateLeft();
+        break;
 
-        case Rotation::Right:
-            RotateRight();
-            break;
+    case Rotation::Right:
+        RotateRight();
+        break;
 
-        case Rotation::Front:
-            RotateFront();
-            break;
+    case Rotation::Front:
+        RotateFront();
+        break;
 
-        case Rotation::Back:
-            RotateBack();
-            break;
+    case Rotation::Back:
+        RotateBack();
+        break;
 
-        default:
-            break;
-        }
-
-        m_Time += m_Rotate;
+    default:
+        break;
     }
+
+    m_Time += m_Rotate;
+    
 
     if (m_Time >= 90.0f) {
         m_Rotation = false;
@@ -137,6 +135,53 @@ void RubikCube::UpdateImGui()
 {
 
 
+}
+
+void RubikCube::Randomize()
+{
+        
+        int random = rand() % 6;
+
+        switch (random)
+        {
+        case 0:
+            SetRotType(Rotation::Top);
+            break;
+
+        case 1:
+            SetRotType(Rotation::Bottom);
+            break;
+
+        case 2:
+            SetRotType(Rotation::Left);
+            break;
+
+        case 3:
+            SetRotType(Rotation::Right);
+            break;
+
+        case 4:
+            SetRotType(Rotation::Front);
+            break;
+
+        case 5:
+            SetRotType(Rotation::Back);
+            break;
+        }
+
+        SetRotState(true);
+
+}
+
+void RubikCube::Reset()
+{
+    m_Cubelets.clear();
+    InitCubeletes();
+}
+
+float RubikCube::GetRotationTime() const
+{
+    return m_Time;
 }
 
 void RubikCube::SetRotType(Rotation type)

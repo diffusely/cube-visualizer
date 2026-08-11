@@ -2,6 +2,7 @@
 
 namespace callback {
 
+    float cameraDistance = 4.11971f;
     double lastMouseX = 0;
     double lastMouseY = 0;
 
@@ -40,5 +41,16 @@ namespace callback {
         if (button == GLFW_MOUSE_BUTTON_LEFT) {
             mousePressed = (action == GLFW_PRESS);
         }
+    }
+
+    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+    {
+        cameraDistance -= static_cast<float>(yoffset);
+
+        if (cameraDistance < 2.0f)
+            cameraDistance = 2.0f;
+
+        if (cameraDistance > 20.0f)
+            cameraDistance = 20.0f;
     }
 }

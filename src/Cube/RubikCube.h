@@ -32,8 +32,10 @@ public:
     void UpdateRotation();
     void UpdateImGui();
 
-    void GetRotType() const;
-    void GetRotState() const;
+    void Randomize();
+    void Reset();
+
+    float GetRotationTime() const;
 
     void SetRotType(Rotation type);
     void SetRotState(bool state);

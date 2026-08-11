@@ -21,7 +21,7 @@ Window::Window(int width, int height, const char* name)
     glfwSetFramebufferSizeCallback(m_Window, callback::framebuffer_size_callback);
     glfwSetCursorPosCallback(m_Window, callback::mouse_move_callback);
     glfwSetMouseButtonCallback(m_Window, callback::mouse_button_callback);
-
+    glfwSetScrollCallback(m_Window, callback::scroll_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD\n";
@@ -65,6 +65,7 @@ bool Window::GlfwInit()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     return true;
 }
