@@ -1,5 +1,6 @@
 cube-visualizer
 =========
+A 3D Rubik’s Cube visualizer built from scratch using C++ and OpenGL.
 
 Clone
 -----
@@ -16,3 +17,5 @@ cd build
 cmake ..
 cmake --build .
 ```
+
+![Rubik's Cube](res/cube.png)

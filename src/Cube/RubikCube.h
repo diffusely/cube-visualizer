@@ -3,7 +3,6 @@
 #include "Cube.h"
 #include <vector>
 
-
 enum class Rotation
 {
     None,
