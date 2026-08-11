@@ -6,9 +6,15 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "CallBack/CallBack.h"
+
 namespace Camera {
+
 
     extern glm::vec3 cameraPos;
     extern glm::vec3 cameraUp;
+
+
+    glm::vec3 GetCameraPosition();
 
 }

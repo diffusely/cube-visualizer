@@ -1,9 +1,14 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "glm/glm.hpp"
+
+#include "math.h"
 
 namespace callback {
 
+    extern float yaw;
+    extern float pitch;
     extern float cameraDistance;
     extern double lastMouseX;
     extern double lastMouseY;

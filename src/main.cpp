@@ -4,7 +4,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-
 #include "Window/Window.h"
 #include "Cube/RubikCube.h"
 #include "Vertices/Vertices.h"
@@ -12,7 +11,6 @@
 
 const unsigned int SCR_WIDTH = 1400;
 const unsigned int SCR_HEIGHT = 960;
-
 
 int main()
 {
@@ -89,7 +87,6 @@ int main()
 
         cube.Update();
 
-
         glm::mat4 cubeRotation = glm::mat4(1.0f);
 
         cubeRotation = glm::rotate(
@@ -98,13 +95,11 @@ int main()
             glm::vec3(1, 0, 0)
         );
 
-
         cubeRotation = glm::rotate(
             cubeRotation,
             glm::radians(callback::cubeRotY),
             glm::vec3(0, 1, 0)
         );
-
 
         UI::DrawCube(
             cube,

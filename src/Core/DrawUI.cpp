@@ -4,48 +4,50 @@ namespace UI {
 
     void DrawUI(RubikCube& cube, bool& randomize)
     {
-        ImGui::Begin("Cube Controls", nullptr, ImGuiWindowFlags_NoMove);
+        ImGui::SetNextWindowSize(ImVec2(140, 300));
 
-        if (ImGui::Button("Top") && cube.GetRotationTime() <= 0.01f)
+        ImGui::Begin("Cube Controls", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
+        if (ImGui::Button("Top", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Top);
         }
 
-        if (ImGui::Button("Bottom") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Bottom", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Bottom);
         }
 
-        if (ImGui::Button("Left") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Left", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Left);
         }
 
-        if (ImGui::Button("Right") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Right", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Right);
         }
 
-        if (ImGui::Button("Front") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Front", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Front);
         }
 
-        if (ImGui::Button("Back") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Back", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
         {
             cube.SetRotState(true);
             cube.SetRotType(Rotation::Back);
         }
 
-        if (ImGui::Button("Randomize") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Randomize", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
             randomize = true;
 
-        if (ImGui::Button("Reset") && cube.GetRotationTime() <= 0.01f)
+        if (ImGui::Button("Reset", ImVec2(120, 20)) && cube.GetRotationTime() <= 0.01f)
             cube.Reset();
 
         ImGui::End();
@@ -60,10 +62,10 @@ namespace UI {
         const glm::mat4& proj,
         const glm::mat4& cubeRotation)
     {
-        Camera::cameraPos.z = callback::cameraDistance;
+        glm::vec3 cameraPos = Camera::GetCameraPosition();
 
         glm::mat4 view = glm::lookAt(
-            Camera::cameraPos,
+            cameraPos,
             glm::vec3(0, 0, 0),
             Camera::cameraUp
         );

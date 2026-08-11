@@ -2,6 +2,8 @@
 
 namespace callback {
 
+    float yaw = 0.0f;
+    float pitch = 20.0f;
     float cameraDistance = 4.11971f;
     double lastMouseX = 0;
     double lastMouseY = 0;
@@ -47,10 +49,12 @@ namespace callback {
     {
         cameraDistance -= static_cast<float>(yoffset);
 
-        if (cameraDistance < 2.0f)
-            cameraDistance = 2.0f;
+        if (cameraDistance < 4.0f)
+            cameraDistance = 4.0f;
 
-        if (cameraDistance > 20.0f)
-            cameraDistance = 20.0f;
+        if (cameraDistance > 15.0f)
+            cameraDistance = 15.0f;
     }
+
+
 }
