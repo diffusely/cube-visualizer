@@ -18,4 +18,16 @@ cmake ..
 cmake --build .
 ```
 
+Controls
+-----
+- **Top** — rotates the top face.
+- **Bottom** — rotates the bottom face.
+- **Left** — rotates the left face.
+- **Right** — rotates the right face.
+- **Front** — rotates the front face.
+- **Back** — rotates the back face.
+- **Randomize** — randomly scrambles the Rubik's Cube.
+- **Reset** — returns the Rubik's Cube to its solved state.
+
+
 ![Rubik's Cube](res/cube.png)
